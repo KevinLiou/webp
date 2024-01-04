@@ -127,42 +127,42 @@ const app = createApp({
         processFile() {
             var that = this
             this.files.forEach(function(value, index) {
-                console.log(index, value);
+                if (value.state == 0) {
+                    value['state'] = 1
+                    value['info'] = '轉檔中...'
+                    that.files[index] = value
 
-                value['state'] = 1
-                value['info'] = '轉檔中...'
-                that.files[index] = value
+                    const image = new Image();
+                    image.onload = () => {
+                        // 透過canvas轉檔
+                        const canvas = document.createElement('canvas');
+                        canvas.width = image.naturalWidth;
+                        canvas.height = image.naturalHeight;
+                        canvas.getContext('2d').drawImage(image, 0, 0);
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                const fileNameWithoutExtension = value.file.name.split('.')[0];
+                                var filename = `${fileNameWithoutExtension}.webp`
+                                // const webpImage = new File([blob], filename, { type: blob.type });
+                                // console.log(webpImage)
 
-                const image = new Image();
-                image.onload = () => {
-                    // 透過canvas轉檔
-                    const canvas = document.createElement('canvas');
-                    canvas.width = image.naturalWidth;
-                    canvas.height = image.naturalHeight;
-                    canvas.getContext('2d').drawImage(image, 0, 0);
-                    canvas.toBlob((blob) => {
-                        if (blob) {
-                            const fileNameWithoutExtension = value.file.name.split('.')[0];
-                            var filename = `${fileNameWithoutExtension}.webp`
-                            // const webpImage = new File([blob], filename, { type: blob.type });
-                            // console.log(webpImage)
+                                value['webp'] = blob
+                                value['state'] = 2
+                                value['info'] = '轉檔成功'
+                                that.files[index] =  value
 
-                            value['webp'] = blob
-                            value['state'] = 2
-                            value['info'] = '轉檔成功'
-                            that.files[index] =  value
-
-                            if (that.allCompleted) {
-                                that.completeToast()
+                                if (that.allCompleted) {
+                                    that.completeToast()
+                                }
+                            }else{
+                                value['state'] = -1
+                                value['info'] = '轉檔失敗'
+                                that.files[index] =  value
                             }
-                        }else{
-                            value['state'] = -1
-                            value['info'] = '轉檔失敗'
-                            that.files[index] =  value
-                        }
-                    }, 'image/webp', (that.imgQuality/100));
-                };
-                image.src = URL.createObjectURL(value.file); // 圖片來源
+                        }, 'image/webp', (that.imgQuality/100));
+                    };
+                    image.src = URL.createObjectURL(value.file); // 圖片來源
+                }
             });
         },
         completeToast() {
