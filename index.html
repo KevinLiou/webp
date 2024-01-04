@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebP Converter</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script src="js/vue.js"></script>
+    <script src="js/jszip.min.js"></script>
+    <script src="js/FileSaver.js"></script>
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="row">
+            <h4>WebP Converter</h4>
+            <div class="space-30"></div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <p class="range-field">
+                    <span style="font-size: 18px;">圖片解析度: <span id="img_quality_value">{{imgQuality}}</span></span>
+                    <input type="range" id="img_quality" name="img_quality" min="1" max="100" v-model="imgQuality" @change="imgQualityChanged"/>
+                </p>
+            </div>
+            <div class="space-30"></div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <input type="file" id="fileUploader" class="display_none" onblur="this.value=''" onchange="app.handleFiles(this.files)" multiple>
+                <div id="upload_zone" class="upload_zone z-depth-2 blue darken-2" accept="image/*">
+                    將要轉檔的圖片拖曳至此
+                </div>
+            </div>
+            <div class="space-30"></div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <button type="button" class="btn-large blue darken-3 waves-effect waves-light" v-bind:class="{ disabled: (files.map(x=>x.state==0).length == 0) }" @click="nextConversion">
+                    開始轉換
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <div class="col s6">
+                <p v-if="files.length > 0">成功:{{files.filter(x=>x.state==2).length}}, 失敗:{{files.filter(x=>x.state==-1).length}}, 待處理:{{files.filter(x=>x.state==0).length}}</p>
+            </div>
+            <div class="col s2">
+                <button type="button" class="btn-large red red-3 waves-effect waves-light" v-bind:class="{ disabled: (files.length == 0) }" @click="clear">
+                    清空
+                </button>
+            </div>
+            <div class="space-30"></div>
+        </div>
+        <table class="striped highlight responsive-table" v-if="files.length > 0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>預覽</th>
+                <th>資訊</th>
+                <th>狀態</th>
+                <th>編輯</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="obj, index in files" :class="{ 'red' : (obj.state == -1), 'lighten-3' : (obj.state == -1) }">
+                <td>#{{index+1}}</td>
+                <td><img class="obj" :src="obj.data"></td>
+                <td>
+                    檔案名稱: {{obj.name}} <br/>
+                    {{ obj.size }} KB
+                </td>
+                <td>
+                    <p v-if="obj.state != 1">{{obj.info}}</p>
+                    <div class="preloader-wrapper active" v-if="obj.state == 1">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a v-if="obj.state == 0" class="btn-floating btn waves-effect waves-light red" @click="deleteImage(obj, index)"><i class="material-icons">delete</i></a>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+        <p id="info" v-if="info.length > 0">{{info}}</p>
+    </div>
+</body>
+
+<script>
+    
+</script>
+<script src="js/md5.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="main.js"></script>
+</html>
+
+
