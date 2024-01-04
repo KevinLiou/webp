@@ -50,7 +50,7 @@
                 </button>
             </div>
             <div class="col s6">
-                <p v-if="files.length > 0">成功:{{files.filter(x=>x.state==2).length}}, 失敗:{{files.filter(x=>x.state==-1).length}}, 待處理:{{files.filter(x=>x.state==0).length}}</p>
+                <h6 v-if="files.length > 0">成功:{{files.filter(x=>x.state==2).length}}, 失敗:{{files.filter(x=>x.state==-1).length}}, 待處理:{{files.filter(x=>x.state==0).length}}</h6>
             </div>
             <div class="col s2">
                 <button type="button" class="btn-large red red-3 waves-effect waves-light" v-bind:class="{ disabled: (files.length == 0) }" @click="clear">
@@ -70,7 +70,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="obj, index in files" :class="{ 'red' : (obj.state == -1), 'lighten-3' : (obj.state == -1) }">
+              <tr v-for="obj, index in files" :class="{ 'red' : (obj.state == -1), 'lighten-3' : (obj.state == -1), 'green' : (obj.state == 2), 'accent-2' : (obj.state == 2) }">
                 <td>#{{index+1}}</td>
                 <td><img class="obj" :src="obj.data"></td>
                 <td>

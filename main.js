@@ -158,6 +158,7 @@ const app = createApp({
                         }else{
                             value['state'] = -1
                             value['info'] = '轉檔失敗'
+                            that.files[index] =  value
                         }
                     }, 'image/webp', (that.imgQuality/100));
                 };
