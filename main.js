@@ -125,8 +125,6 @@ const app = createApp({
             }
         },
         processFile() {
-
-            var count = 0
             var that = this
             this.files.forEach(function(value, index) {
                 console.log(index, value);
@@ -154,16 +152,12 @@ const app = createApp({
                             value['info'] = '轉檔成功'
                             that.files[index] =  value
 
-                            count = count+1
-                            if (count == that.files.length) {
-                                if (that.allCompleted) {
-                                    that.completeToast()
-                                }
+                            if (that.allCompleted) {
+                                that.completeToast()
                             }
                         }else{
                             value['state'] = -1
                             value['info'] = '轉檔失敗'
-                            count = count+1
                         }
                     }, 'image/webp', (that.imgQuality/100));
                 };
