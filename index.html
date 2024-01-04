@@ -43,16 +43,16 @@
             <div class="space-30"></div>
         </div>
         <div class="row">
-            <div class="col s4">
+            <div class="col s3">
                 <button type="button" class="btn-large blue darken-3 waves-effect waves-light" v-bind:class="{ disabled: (files.map(x=>x.state==0).length == 0) }" @click="nextConversion">
                     開始轉換
                     <i class="material-icons right">send</i>
                 </button>
             </div>
-            <div class="col s6">
+            <div class="col s6 center-align ">
                 <h6 v-if="files.length > 0">成功:{{files.filter(x=>x.state==2).length}}, 失敗:{{files.filter(x=>x.state==-1).length}}, 待處理:{{files.filter(x=>x.state==0).length}}</h6>
             </div>
-            <div class="col s2">
+            <div class="col s3 right-align">
                 <button type="button" class="btn-large red red-3 waves-effect waves-light" v-bind:class="{ disabled: (files.length == 0) }" @click="clear">
                     清空
                 </button>
