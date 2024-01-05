@@ -172,7 +172,8 @@ const app = createApp({
         downloadAll() {
             if (this.files.filter(x=>x.state==2).length == 0) { return }
 
-            const currentDateTime = new Date().toISOString().replace(/[-:]/g, '').replace('T', '').split('.')[0];
+            let gmt8Date = new Date(Date.now() + 8*60*60*1000)
+            const currentDateTime = gmt8Date.toISOString().replace(/[-:]/g, '').replace('T', '').split('.')[0];
             var zip = new JSZip();
             var imgFolder = zip.folder(currentDateTime);
 
