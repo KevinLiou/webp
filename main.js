@@ -167,7 +167,7 @@ const app = createApp({
         },
         completeToast() {
             var s = `<span>已全數轉檔完成, 成功:${this.files.filter(x=>x.state==2).length}, 失敗:${this.files.filter(x=>x.state==-1).length}</span><br/><button class="btn-flat toast-action" onclick="app.downloadAll()">下載全部檔案</button>`
-            M.toast({html: s, displayLength: 30000, classes: 'rounded green darken-1'})
+            M.toast({html: s, displayLength: 60000, classes: 'rounded green darken-1'})
         },
         downloadAll() {
             if (this.files.filter(x=>x.state==2).length == 0) { return }
